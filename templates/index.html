@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentEon AI</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="theme-dark">
+
+<!-- NAVBAR -->
+<header class="flex justify-between items-center p-6 px-10">
+
+    <h1 class="text-3xl font-bold gradient-text">
+        TalentEon AI
+    </h1>
+
+    <div class="space-x-4">
+        <a href="/login" class="px-5 py-2 rounded-xl border border-cyan-400 hover:bg-cyan-500/20">
+            Login
+        </a>
+
+        <a href="/register" class="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold">
+            Get Started
+        </a>
+    </div>
+
+</header>
+
+<!-- HERO SECTION -->
+<section class="text-center py-28 px-6">
+
+    <h1 class="text-6xl font-bold leading-tight" data-aos="fade-up">
+        AI-Powered Hiring Intelligence <br>
+        for the Modern Workforce
+    </h1>
+
+    <p class="text-gray-300 mt-6 text-xl max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        TalentEon AI transforms recruitment using predictive scoring, bias-aware screening,
+        skill verification, and deep candidate intelligence.
+    </p>
+
+    <div class="mt-10 space-x-4" data-aos="fade-up" data-aos-delay="400">
+
+        <a href="/register"
+        class="px-8 py-4 bg-cyan-500 text-black font-bold rounded-2xl hover:bg-cyan-400">
+
+            Start Free Trial
+
+        </a>
+
+        <a href="/login"
+        class="px-8 py-4 border border-white/30 rounded-2xl hover:bg-white/10">
+
+            Login
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- FEATURES -->
+<section class="px-10 py-20 grid md:grid-cols-3 gap-8">
+
+    <div class="glass-card p-8" data-aos="fade-up">
+        <h2 class="text-2xl font-bold">AI Resume Intelligence</h2>
+        <p class="text-gray-300 mt-3">
+            Deep semantic matching between job roles and candidate profiles using AI scoring models.
+        </p>
+    </div>
+
+    <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold">Fraud Detection System</h2>
+        <p class="text-gray-300 mt-3">
+            Detect AI-generated resumes, fake experience, and inconsistencies in candidate history.
+        </p>
+    </div>
+
+    <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="200">
+        <h2 class="text-2xl font-bold">Bias-Free Hiring</h2>
+        <p class="text-gray-300 mt-3">
+            Anonymous screening ensures decisions are based purely on skill and performance.
+        </p>
+    </div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="px-10 py-20 text-center">
+
+    <h2 class="text-4xl font-bold mb-10" data-aos="fade-up">
+        How TalentEon AI Works
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+        <div class="glass-card p-6" data-aos="fade-up">
+            <h3 class="text-xl font-bold">1. Upload Resume</h3>
+            <p class="text-gray-300 mt-2">
+                Candidates upload PDF or DOCX resumes securely.
+            </p>
+        </div>
+
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="text-xl font-bold">2. AI Analysis</h3>
+            <p class="text-gray-300 mt-2">
+                System evaluates skills, experience, and behavioral signals.
+            </p>
+        </div>
+
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="text-xl font-bold">3. Smart Ranking</h3>
+            <p class="text-gray-300 mt-2">
+                Recruiters get ranked candidates with explanations.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+<section class="text-center py-24">
+
+    <h2 class="text-5xl font-bold" data-aos="fade-up">
+        Start Hiring Smarter Today
+    </h2>
+
+    <p class="text-gray-300 mt-6" data-aos="fade-up" data-aos-delay="100">
+        Join the future of AI-powered recruitment with TalentEon AI.
+    </p>
+
+    <a href="/register"
+    class="mt-10 inline-block px-10 py-4 bg-cyan-500 text-black font-bold rounded-2xl">
+
+        Get Started
+
+    </a>
+
+</section>
+
+<script>
+AOS.init();
+</script>
+
+</body>
+</html>

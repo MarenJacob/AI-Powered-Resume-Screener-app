@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>TalentEon AI | Candidate Intelligence</title>
+
+    <!-- Tailwind -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- AOS -->
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+    rel="stylesheet">
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body id="body"
+class="theme-dark min-h-screen transition-all duration-500">
+
+<div class="flex">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar-glass w-72 min-h-screen p-6">
+
+        <div class="mb-10">
+
+            <h1 class="text-4xl font-bold gradient-text">
+
+                TalentEon AI
+
+            </h1>
+
+            <p class="text-gray-400 mt-2">
+
+                Intelligent Workforce Platform
+
+            </p>
+
+        </div>
+
+        <!-- SIDEBAR -->
+
+        <nav class="space-y-4">
+
+            <a href="/candidates"
+            class="nav-item">
+
+                📊 Candidate Rankings
+
+            </a>
+
+            <a href="/upload-resume"
+            class="nav-item">
+
+                📄 Analyze Resume
+
+            </a>
+
+            <a href="#"
+            class="nav-item">
+
+                🧠 AI Insights
+
+            </a>
+
+            <a href="#"
+            class="nav-item">
+
+                📈 Analytics
+
+            </a>
+
+            <a href="#"
+            class="nav-item">
+
+                ⚖ Bias Audit
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="flex-1 p-10">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+<script>
+
+AOS.init();
+
+// =====================================
+// THEME SYSTEM
+// =====================================
+
+const body = document.getElementById("body");
+
+// Load saved theme
+
+if(localStorage.getItem("theme") === "light") {
+
+    body.classList.remove("theme-dark");
+
+    body.classList.add("theme-light");
+}
+
+function toggleTheme() {
+
+    if(body.classList.contains("theme-dark")) {
+
+        body.classList.remove("theme-dark");
+
+        body.classList.add("theme-light");
+
+        localStorage.setItem("theme", "light");
+
+    } else {
+
+        body.classList.remove("theme-light");
+
+        body.classList.add("theme-dark");
+
+        localStorage.setItem("theme", "dark");
+    }
+}
+
+</script>
+
+</body>
+</html>

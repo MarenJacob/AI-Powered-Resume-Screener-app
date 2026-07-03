@@ -1,0 +1,85 @@
+{% extends "auth/auth_base.html" %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+    <div class="auth-left">
+
+        <img
+            src="{{ url_for('static',
+            filename='images/auth-bg.jpg') }}"
+    
+            class="auth-image">
+    
+    </div>
+    <div class="auth-right">
+
+        <div class="glass-card auth-form">
+
+            <h2 class="form-title">
+
+                Create Account
+
+            </h2>
+
+            <p class="form-subtitle">
+
+                Register your organization
+
+            </p>
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="full_name"
+                    placeholder="Full Name"
+                    class="input-dark w-full p-4 rounded-xl mb-4">
+
+                <input
+                    type="text"
+                    name="company_name"
+                    placeholder="Company Name"
+                    class="input-dark w-full p-4 rounded-xl mb-4">
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    class="input-dark w-full p-4 rounded-xl mb-4">
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    class="input-dark w-full p-6 rounded-xl mb-6">
+
+                <button
+                    class="bg-cyan-500 hover:bg-cyan-400 w-full p-4 rounded-xl text-lg font-semibold">
+
+                    Create Account
+
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+
+                Already have an account?
+
+                <a href="{{ url_for('auth.login') }}">
+
+                    Login
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

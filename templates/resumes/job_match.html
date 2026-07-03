@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Candidate Matching</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="hero-bg min-h-screen text-white">
+
+<div class="container mx-auto p-10">
+
+    <h1 class="text-5xl font-bold gradient-text mb-10">
+
+        AI Candidate Matching
+
+    </h1>
+
+    <div class="glass-card p-8 mb-10">
+
+        <form method="POST">
+
+            <textarea
+            name="job_description"
+            placeholder="Paste Job Description Here..."
+            class="input-dark w-full p-5 rounded-xl h-56 mb-6"></textarea>
+
+            <button
+            class="bg-cyan-500 hover:bg-cyan-400 px-8 py-4 rounded-xl">
+
+                Analyze Candidates
+
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if candidates %}
+
+    <div class="grid gap-6">
+
+        {% for candidate in candidates %}
+
+        <div class="glass-card p-6">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <h2 class="text-2xl font-bold">
+
+                        {{ candidate.candidate_name }}
+
+                    </h2>
+
+                    <p class="text-gray-400 mt-2">
+
+                        {{ candidate.skills }}
+
+                    </p>
+
+                </div>
+
+                <div class="text-right">
+
+                    <h3 class="text-4xl font-bold text-cyan-400">
+
+                        {{ candidate.ai_score }}%
+
+                    </h3>
+
+                    <p class="text-gray-400">
+
+                        Match Score
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

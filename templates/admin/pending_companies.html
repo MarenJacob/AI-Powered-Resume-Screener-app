@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>TalentEon AI - Pending Requests</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+
+        function toggleTheme() {
+
+            const body = document.body;
+
+            if(body.classList.contains("theme-light")) {
+
+                body.classList.remove("theme-light");
+                body.classList.add("theme-dark");
+                localStorage.setItem("theme","dark");
+
+            }
+
+            else {
+
+                body.classList.remove("theme-dark");
+                body.classList.add("theme-light");
+                localStorage.setItem("theme","light");
+
+            }
+
+        }
+
+        window.onload = () => {
+
+            const savedTheme =
+                localStorage.getItem("theme");
+
+            if(savedTheme === "light") {
+
+                document.body.classList.remove("theme-dark");
+                document.body.classList.add("theme-light");
+
+            }
+
+            else {
+
+                document.body.classList.add("theme-dark");
+
+            }
+
+        }
+
+        </script>
+
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body id="bodyTheme"
+class="theme-dark min-h-screen text-white transition-all duration-500">
+
+    <div class="max-w-7xl mx-auto p-8">
+
+        <!-- HEADER -->
+
+        <div class="flex justify-between items-center mb-10">
+
+            <div>
+
+                <h1 class="text-5xl font-bold gradient-text mt-2">
+                    TalentEon AI
+                </h1>
+
+                <p class="text-gray-400 mt-3">
+                    Pending Company Access Requests
+                </p>
+
+            </div>
+
+            <div class="flex gap-3">
+
+                <a href="{{ url_for('admin.admin_dashboard') }}"
+                class="glass-card px-4 py-2 rounded-xl">
+                    ← Dashboard
+                </a>
+
+                <button
+                    onclick="toggleTheme()"
+                    class="glass-card px-4 py-2 rounded-xl">
+
+                    🌙 Theme
+
+                </button>
+
+                <a href="/logout"
+                class="bg-red-500 hover:bg-red-600 px-5 py-3 rounded-xl">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="dashboard-card p-4 mb-4">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- PENDING REQUESTS -->
+
+        <div class="dashboard-card p-6">
+
+            <div class="flex justify-between items-center mb-6">
+
+                <h2 class="text-2xl font-bold">
+                    Pending Requests
+                </h2>
+
+                <span class="text-gray-400">
+                    {{ companies|length }} awaiting review
+                </span>
+
+            </div>
+
+            {% if not companies %}
+
+            <p class="text-gray-400">
+                No pending requests right now.
+            </p>
+
+            {% else %}
+
+            <div class="grid gap-4">
+
+                {% for company in companies %}
+
+                <div class="dashboard-card p-6">
+
+                    <div class="flex justify-between items-start flex-wrap gap-4">
+
+                        <div>
+
+                            <h3 class="text-xl font-bold text-cyan-400">
+                                {{ company.name }}
+                            </h3>
+
+                            <p class="text-gray-400 mt-1">
+                                {{ company.contact_name }} — {{ company.contact_email }}
+                            </p>
+
+                            <p class="text-gray-500 text-sm mt-1">
+                                Size: {{ company.company_size or "—" }}
+                            </p>
+
+                            {% if company.hiring_needs %}
+                            <p class="text-gray-500 text-sm mt-1">
+                                Hiring for: {{ company.hiring_needs }}
+                            </p>
+                            {% endif %}
+
+                            <p class="text-gray-600 text-xs mt-2">
+                                Requested {{ company.created_at }}
+                            </p>
+
+                        </div>
+
+                        <div class="flex gap-3">
+
+                            <form method="POST" action="{{ url_for('onboarding.approve_company', company_id=company.id) }}">
+                                <button
+                                    class="bg-cyan-500 hover:bg-cyan-400 px-5 py-2 rounded-xl font-semibold">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <button
+                                type="button"
+                                onclick="document.getElementById('reject-form-{{ company.id }}').classList.toggle('hidden')"
+                                class="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-semibold">
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <form
+                        id="reject-form-{{ company.id }}"
+                        method="POST"
+                        action="{{ url_for('onboarding.reject_company', company_id=company.id) }}"
+                        class="hidden mt-4">
+
+                        <textarea
+                            name="reason"
+                            placeholder="Reason for rejection (optional, included in the email)"
+                            rows="2"
+                            class="w-full p-3 mb-3 rounded-xl bg-gray-800 border border-gray-700"></textarea>
+
+                        <button class="bg-red-600 hover:bg-red-500 px-5 py-2 rounded-xl font-semibold">
+                            Confirm Rejection
+                        </button>
+
+                    </form>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>

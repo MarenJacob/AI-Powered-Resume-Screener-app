@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>TalentEon AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+
+        function toggleTheme() {
+        
+            const body = document.body;
+        
+            if(body.classList.contains("theme-light")) {
+        
+                body.classList.remove("theme-light");
+        
+                body.classList.add("theme-dark");
+        
+                localStorage.setItem("theme","dark");
+        
+            }
+        
+            else {
+        
+                body.classList.remove("theme-dark");
+        
+                body.classList.add("theme-light");
+        
+                localStorage.setItem("theme","light");
+        
+            }
+        
+        }
+        
+        window.onload = () => {
+        
+            const savedTheme =
+                localStorage.getItem("theme");
+        
+            if(savedTheme === "light") {
+        
+                document.body.classList.remove("theme-dark");
+        
+                document.body.classList.add("theme-light");
+        
+            }
+        
+            else {
+        
+                document.body.classList.add("theme-dark");
+        
+            }
+        
+        }
+        
+        </script>
+
+    
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body id="bodyTheme"
+class="theme-dark min-h-screen text-white transition-all duration-500">
+
+    <div class="max-w-7xl mx-auto p-8">
+    
+        <!-- HEADER -->
+    
+        <div class="flex justify-between items-center mb-10">
+    
+            <div>
+
+    
+                <h1 class="text-5xl font-bold gradient-text mt-2">
+                    TalentEon AI
+                </h1>
+    
+                <p class="text-gray-400 mt-3">
+                    TalentEon AI Enterprise Administration Center
+                </p>
+    
+            </div> 
+    
+            <div class="flex gap-3">
+
+                <a href="{{ url_for('onboarding.pending_companies') }}"
+                class="glass-card px-4 py-2 rounded-xl relative">
+
+                    📋 Pending Requests
+
+                    {% if pending_count and pending_count > 0 %}
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-xs w-6 h-6 flex items-center justify-center rounded-full">
+                        {{ pending_count }}
+                    </span>
+                    {% endif %}
+
+                </a>
+                
+                <button
+                    onclick="toggleTheme()"
+                    class="glass-card px-4 py-2 rounded-xl">
+            
+                    🌙 Theme
+            
+                </button>
+
+                <a href="/logout"
+                class="bg-red-500 hover:bg-red-600 px-5 py-3 rounded-xl">
+                    Logout
+                </a>
+    
+            </div>
+    
+        </div>
+    
+        <!-- ADMIN KPI CARDS -->
+
+<div class="grid md:grid-cols-6 gap-6 mb-8">
+
+    <div class="dashboard-card p-6">
+        <p class="text-gray-400">Companies</p>
+        <div class="stat-number text-cyan-400">
+            {{ analytics.total_companies }}
+        </div>
+    </div>
+
+    <div class="dashboard-card p-6">
+        <p class="text-gray-400">Users</p>
+        <div class="stat-number text-green-400">
+            {{ users|length }}
+        </div>
+    </div>
+
+    <div class="dashboard-card p-6">
+        <p class="text-gray-400">Candidates</p>
+        <div class="stat-number text-yellow-400">
+            {{ resumes|length }}
+        </div>
+    </div>
+
+    <div class="dashboard-card p-6">
+        <p class="text-gray-400">Avg AI Score</p>
+        <div class="stat-number text-purple-400">
+            {{ analytics.average_score }}%
+        </div>
+    </div>
+
+    <div class="dashboard-card p-6">
+        <p class="text-gray-400">Platform Status</p>
+        <div class="stat-number text-green-400">
+            Online
+        </div>
+    </div>
+
+    <a href="{{ url_for('onboarding.pending_companies') }}"
+    class="dashboard-card p-6 hover:opacity-80 transition">
+        <p class="text-gray-400">Pending Requests</p>
+        <div class="stat-number text-red-400">
+            {{ pending_count }}
+        </div>
+    </a>
+
+</div>
+    
+<div class="dashboard-card p-6 md:col-span-2 ai-glow">
+
+    <h2 class="text-2xl font-bold mb-3 text-cyan-400">
+        TalentEon AI Platform Overview
+    </h2>
+
+    <p class="text-gray-300">
+        Super Admin monitoring all companies, users, resumes,
+        AI screening activities and hiring analytics.
+    </p>
+
+    <div class="grid grid-cols-4 gap-4 mt-6">
+
+        <div>
+            <p class="text-gray-500 text-sm">
+                Companies
+            </p>
+
+            <h3 class="text-3xl font-bold text-cyan-400">
+                {{ analytics.total_companies }}
+            </h3>
+        </div>
+
+        <div>
+            <p class="text-gray-500 text-sm">
+                Users
+            </p>
+
+            <h3 class="text-3xl font-bold text-green-400">
+                {{ users|length }}
+            </h3>
+        </div>
+
+        <div>
+            <p class="text-gray-500 text-sm">
+                Candidates
+            </p>
+
+            <h3 class="text-3xl font-bold text-yellow-400">
+                {{ resumes|length }}
+            </h3>
+        </div>
+
+        <div>
+            <p class="text-gray-500 text-sm">
+                AI Score
+            </p>
+
+            <h3 class="text-3xl font-bold text-purple-400">
+                {{ analytics.average_score }}%
+            </h3>
+        </div>
+
+    </div>
+
+</div>
+    
+        <!-- ACTIONS -->
+    
+        <div class="flex gap-4 mb-8">
+    
+            <a href=""
+            class="dashboard-card px-6 py-4">
+                Company Management
+            </a>
+    
+            <a href=""
+            class="dashboard-card px-6 py-4">
+                User Management
+            </a>
+
+            <a href="{{ url_for('onboarding.pending_companies') }}"
+            class="dashboard-card px-6 py-4">
+                Review Pending Requests
+                {% if pending_count and pending_count > 0 %}
+                ({{ pending_count }})
+                {% endif %}
+            </a>
+    
+        </div>
+
+        <input
+        type="text"
+        id="UserSearch"
+        placeholder="Search User..."
+        class="w-full p-4 mb-5 rounded-xl bg-gray-800 border border-gray-700">
+        <div class="dashboard-card p-6 mb-8">
+
+            <h2 class="text-2xl font-bold mb-5">
+                User Management
+            </h2>
+        
+            <table class="w-full">
+        
+                <thead>
+        
+                    <tr class="border-b border-slate-700">
+        
+                        <th class="py-3 text-left">Name</th>
+                        <th class="text-left">Email</th>
+                        <th class="text-left">Role</th>
+        
+                    </tr>
+        
+                </thead>
+        
+                <tbody>
+        
+                    {% for user in users %}
+        
+                    <tr class="border-b border-slate-800">
+        
+                        <td class="py-3">
+                            {{ user.full_name }}
+                        </td>
+        
+                        <td>
+                            {{ user.email }}
+                        </td>
+        
+                        <td>
+        
+                            {% if user.role == "super_admin" %}
+        
+                            <span class="status-pill bg-red-500">
+                                Super Admin
+                            </span>
+        
+                            {% else %}
+        
+                            <span class="status-pill bg-cyan-500">
+                                HR Manager
+                            </span>
+        
+                            {% endif %}
+        
+                        </td>
+        
+                    </tr>
+        
+                    {% endfor %}
+        
+                </tbody>
+        
+            </table>
+        
+        </div>
+        <!-- RANKING TABLE -->
+    
+        <div class="dashboard-card p-6">
+    
+            <div class="flex justify-between items-center mb-6">
+    
+                <h2 class="text-2xl font-bold">
+                    Candidate Ranking Leaderboard
+                </h2>
+    
+                <span class="text-gray-400">
+                    Ranked by AI Score
+                </span>
+    
+            </div>
+    
+            <table class="w-full">
+    
+                <thead>
+    
+                    <tr class="border-b border-slate-700">
+    
+                        <th class="py-4 text-left">Candidate</th>
+                        <th class="text-left">Email</th>
+                        <th class="text-left">Score</th>
+                        <th class="text-left">Decision</th>
+    
+                    </tr>
+    
+                </thead>
+    
+                <tbody>
+    
+                {% for resume in resumes|sort(attribute='ai_score', reverse=True) %}
+    
+                <tr class="table-row border-b border-slate-800">
+    
+                    <td class="py-4">
+                        {{ resume.candidate_name }}
+                    </td>
+    
+                    <td>
+                        {{ resume.email }}
+                    </td>
+    
+                    <td class="w-64">
+    
+                        <div class="bg-slate-700 h-3 rounded-full">
+    
+                            <div
+                                class="bg-cyan-500 h-3 rounded-full"
+                                style="width:{{ resume.ai_score }}%">
+                            </div>
+    
+                        </div>
+    
+                        <div class="mt-1 text-sm">
+                            {{ resume.ai_score }}%
+                        </div>
+    
+                    </td>
+    
+                    <td>
+    
+                        {% if resume.ai_score >= 80 %}
+    
+                        <span class="status-pill bg-green-500">
+                            Recommended
+                        </span>
+    
+                        {% elif resume.ai_score >= 60 %}
+    
+                        <span class="status-pill bg-yellow-500 text-black">
+                            Consider
+                        </span>
+    
+                        {% else %}
+    
+                        <span class="status-pill bg-red-500">
+                            Reject
+                        </span>
+    
+                        {% endif %}
+    
+                    </td>
+    
+                </tr>
+    
+                {% endfor %}
+    
+                </tbody>
+    
+            </table>
+    
+        </div>
+    
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+        
+            const search =
+                document.getElementById("UserSearch");
+        
+            if(search){
+        
+                search.addEventListener("keyup", function() {
+        
+                    let value =
+                        this.value.toLowerCase();
+        
+                    let rows =
+                        document.querySelectorAll("tbody tr");
+        
+                    rows.forEach(row => {
+        
+                        row.style.display =
+                            row.innerText
+                            .toLowerCase()
+                            .includes(value)
+        
+                            ? ""
+        
+                            : "none";
+        
+                    });
+        
+                });
+        
+            }
+        
+        });
+        
+        </script>
+    </body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>TalentEon AI | Upload Resume</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body id="bodyTheme"
+class="theme-dark min-h-screen transition-all duration-500">
+
+    <script>
+
+        window.onload = () => {
+
+            const savedTheme =
+                localStorage.getItem("theme");
+
+            if(savedTheme === "light") {
+
+                document.body.classList.remove("theme-dark");
+                document.body.classList.add("theme-light");
+
+            } else {
+
+                document.body.classList.add("theme-dark");
+            }
+        }
+
+    </script>
+
+    <div class="max-w-6xl mx-auto p-8">
+
+        <!-- HEADER -->
+
+        <div class="flex justify-between items-center mb-10">
+
+            <div>
+
+                <h1 class="text-5xl font-bold gradient-text">
+                    TalentEon AI
+                </h1>
+
+                <p class="text-gray-400 mt-2">
+                    Intelligent Resume Screening Platform
+                </p>
+
+            </div>
+
+            <a href="/dashboard"
+            class="bg-cyan-500 hover:bg-cyan-600 px-5 py-3 rounded-xl font-semibold text-white">
+
+                ← Dashboard
+
+            </a>
+
+        </div>
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+
+        {% set category, message = messages[-1] %}
+
+        <div class="fixed top-5 right-5 z-50">
+
+            <div class="
+                {% if category == 'success' %}
+                    bg-green-500
+                {% elif category == 'error' %}
+                    bg-red-500
+                {% else %}
+                    bg-blue-500
+                {% endif %}
+                text-white px-6 py-4 rounded-xl shadow-lg">
+
+                {{ message }}
+
+            </div>
+
+        </div>
+
+    {% endif %}
+{% endwith %}
+
+        <!-- MAIN CARD -->
+
+        <div class="glass-card p-10 max-w-4xl mx-auto">
+
+            <div class="text-center mb-10">
+
+                <h2 class="text-4xl font-bold gradient-text">
+
+                    Upload Candidate Resume
+
+                </h2>
+
+                <p class="text-gray-400 mt-3">
+
+                    Upload a resume and let TalentEon AI evaluate,
+                    rank and recommend candidates automatically.
+
+                </p>
+
+            </div>
+
+            <form method="POST"
+            enctype="multipart/form-data">
+
+                <!-- Candidate Name -->
+
+                <label class="block mb-2 font-semibold">
+
+                    Candidate Name
+
+                </label>
+
+                <input
+                type="text"
+                name="candidate_name"
+                required
+                placeholder="Enter candidate full name"
+                class="input-dark w-full p-4 rounded-xl mb-6">
+
+                <!-- Job Description -->
+
+                <label class="block mb-2 font-semibold">
+
+                    Job Description
+
+                </label>
+
+                <textarea
+                name="job_description"
+                required
+                placeholder="Paste job description here..."
+                class="input-dark w-full p-4 rounded-xl mb-6 h-52"></textarea>
+
+                <!-- Resume Upload -->
+
+                <label class="block mb-2 font-semibold">
+
+                    Resume File
+
+                </label>
+
+                <div class="border-2 border-dashed border-cyan-500 rounded-2xl p-8 text-center mb-8">
+
+                    <input
+                    type="file"
+                    name="resume"
+                    required
+                    accept=".pdf,.docx"
+                    class="w-full">
+
+                    <p class="text-gray-400 mt-3">
+
+                        Supported formats:
+                        PDF and DOCX
+
+                    </p>
+
+                </div>
+
+                <!-- Submit Button -->
+
+                <button
+                type="submit"
+                class="w-full bg-cyan-500 hover:bg-cyan-600 text-white text-lg font-bold p-4 rounded-xl transition">
+
+                    Analyze Candidate with AI
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,452 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+
+<div class="flex justify-between items-center mb-10">
+
+    <div>
+
+        <h1 class="text-5xl font-bold gradient-text">
+            Candidate Intelligence Center
+        </h1>
+
+        <p class="text-gray-400 mt-2">
+            TalentEon AI Candidate Analytics & Ranking Engine
+        </p>
+
+    </div>
+
+    <div class="flex gap-3">
+
+        <a href="/dashboard"
+        class="bg-slate-700 hover:bg-slate-600 px-6 py-4 rounded-2xl font-semibold">
+    
+            ← Dashboard
+    
+        </a>
+    
+        <a href="/upload-resume"
+        class="bg-cyan-500 hover:bg-cyan-400 px-6 py-4 rounded-2xl font-semibold">
+    
+            + Analyze Resume
+    
+        </a>
+    
+        {% if current_user.role == "super_admin" %}
+    
+        <a href="/admin-dashboard"
+        class="bg-indigo-600 hover:bg-indigo-500 px-6 py-4 rounded-2xl font-semibold">
+    
+            Admin Dashboard
+    
+        </a>
+    
+        {% endif %}
+    
+    </div>
+
+</div>
+
+
+<!-- ANALYTICS -->
+
+<div class="grid md:grid-cols-4 gap-6 mb-10">
+
+    <div class="glass-card p-6">
+
+        <p class="text-gray-400">
+            Total Candidates
+        </p>
+
+        <h1 class="text-5xl font-bold mt-3 text-cyan-400">
+            {{ candidates|length }}
+        </h1>
+
+    </div>
+
+    <div class="glass-card p-6">
+
+        <p class="text-gray-400">
+            Recommended
+        </p>
+
+        <h1 class="text-5xl font-bold mt-3 text-green-400">
+
+            {{ candidates|selectattr(
+            'recommendation',
+            'equalto',
+            'Recommended'
+            )|list|length }}
+
+        </h1>
+
+    </div>
+
+    <div class="glass-card p-6">
+
+        <p class="text-gray-400">
+            Average Score
+        </p>
+
+        <h1 class="text-5xl font-bold mt-3 text-purple-400">
+
+            {% if candidates %}
+            {{ (
+            candidates|sum(attribute='ai_score')
+            / candidates|length
+            )|round|int }}%
+            {% else %}
+            0%
+            {% endif %}
+
+        </h1>
+
+    </div>
+
+    <div class="glass-card p-6">
+
+        <p class="text-gray-400">
+            AI Risk Alerts
+        </p>
+
+        <h1 class="text-5xl font-bold mt-3 text-yellow-400">
+
+            {{ candidates|selectattr(
+            'ai_generated_probability',
+            'ge',
+            70
+            )|list|length }}
+
+        </h1>
+
+    </div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="glass-card p-5 mb-8">
+
+    <input
+        id="candidateSearch"
+        type="text"
+        placeholder="Search candidate name, email or skills..."
+        class="w-full bg-transparent outline-none text-white">
+
+</div>
+
+
+<!-- LEADERBOARD -->
+
+<div class="glass-card p-6 mb-10">
+
+    <div class="flex justify-between mb-5">
+
+        <h2 class="text-2xl font-bold">
+            Candidate Ranking Leaderboard
+        </h2>
+
+        <span class="text-gray-400">
+            Sorted by AI Score
+        </span>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead>
+
+                <tr class="border-b border-gray-700">
+
+                    <th class="text-left py-4">
+                        Candidate
+                    </th>
+
+                    <th class="text-left">
+                        Score
+                    </th>
+
+                    <th class="text-left">
+                        Recommendation
+                    </th>
+
+                    <th class="text-left">
+                        AI Risk
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for candidate in candidates|sort(attribute='ai_score', reverse=True) %}
+
+            <tr class="candidate-row border-b border-slate-800">
+
+                <td class="py-4">
+
+                    <div class="font-bold">
+
+                        {{ candidate.candidate_name }}
+
+                    </div>
+
+                    <div class="text-gray-400 text-sm">
+
+                        {{ candidate.email }}
+
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <div class="w-48">
+
+                        <div class="bg-slate-700 h-3 rounded-full">
+
+                            <div
+                            class="bg-cyan-500 h-3 rounded-full"
+                            style="width:{{ candidate.ai_score }}%">
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-sm mt-1">
+
+                            {{ candidate.ai_score }}%
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+                <td>
+
+                    {% if candidate.ai_score >= 80 %}
+
+                    <span class="px-3 py-1 rounded-full bg-green-500">
+
+                        Recommended
+
+                    </span>
+
+                    {% elif candidate.ai_score >= 60 %}
+
+                    <span class="px-3 py-1 rounded-full bg-yellow-500 text-black">
+
+                        Consider
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="px-3 py-1 rounded-full bg-red-500">
+
+                        Reject
+
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if candidate.ai_generated_probability >= 70 %}
+
+                    <span class="text-red-400 font-semibold">
+
+                        High
+
+                    </span>
+
+                    {% elif candidate.ai_generated_probability >= 40 %}
+
+                    <span class="text-yellow-400 font-semibold">
+
+                        Medium
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="text-green-400 font-semibold">
+
+                        Low
+
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- CANDIDATE CARDS -->
+
+<div class="grid gap-8">
+
+{% for candidate in candidates|sort(attribute='ai_score', reverse=True) %}
+
+<div class="glass-card p-8 candidate-row">
+
+    <div class="flex justify-between items-center">
+
+        <div>
+
+            <h2 class="text-3xl font-bold">
+
+                {{ candidate.candidate_name }}
+
+            </h2>
+
+            <p class="text-gray-400">
+
+                {{ candidate.email }}
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <div class="text-5xl font-bold text-cyan-400">
+
+                {{ candidate.ai_score }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 mt-8">
+
+        <div>
+
+            <h3 class="text-green-400 font-bold mb-3">
+
+                Matched Skills
+
+            </h3>
+
+            <p>
+
+                {{ candidate.matched_skills }}
+
+            </p>
+
+        </div>
+
+        <div>
+
+            <h3 class="text-red-400 font-bold mb-3">
+
+                Missing Skills
+
+            </h3>
+
+            <p>
+
+                {{ candidate.missing_skills }}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="mt-6">
+
+        <h3 class="font-bold mb-2">
+            AI Recommendation
+        </h3>
+
+        <p class="text-cyan-300">
+
+            {{ candidate.recommendation }}
+
+        </p>
+
+    </div>
+
+    <div class="mt-4">
+
+        <h3 class="font-bold mb-2">
+            AI Generated Probability
+        </h3>
+
+        <p class="text-yellow-400">
+
+            {{ candidate.ai_generated_probability }}%
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const search =
+    document.getElementById("candidateSearch");
+
+    if(search){
+
+        search.addEventListener("keyup", function(){
+
+            let value =
+            this.value.toLowerCase();
+
+            let rows =
+            document.querySelectorAll(".candidate-row");
+
+            rows.forEach(row => {
+
+                row.style.display =
+                row.innerText
+                .toLowerCase()
+                .includes(value)
+
+                ? ""
+
+                : "none";
+
+            });
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

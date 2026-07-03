@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TalentEon AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- FLASH NOTIFICATIONS -->
+
+    <div class="fixed top-5 right-5 z-50 space-y-3">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="
+                            px-5 py-4 rounded-xl shadow-xl text-white
+                            animate-bounce
+                            {% if category == 'success' %}
+                                bg-green-500
+                            {% elif category == 'error' %}
+                                bg-red-500
+                            {% elif category == 'warning' %}
+                                bg-yellow-500 text-black
+                            {% else %}
+                                bg-indigo-600
+                            {% endif %}
+                        "
+                    >
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <script>
+
+        setTimeout(() => {
+
+            const alerts = document.querySelectorAll(".fixed > div")
+
+            alerts.forEach(alert => {
+
+                alert.style.display = "none"
+
+            })
+
+        }, 4000)
+
+    </script>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="toast align-items-center text-white bg-{{ category }} border-0 show mb-2">
+
+                    <div class="d-flex">
+
+                        <div class="toast-body">
+
+                            {{ message }}
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast">
+                        </button>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+</div>
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+    
+            const toasts =
+                document.querySelectorAll(".toast");
+    
+            toasts.forEach(function(toast){
+    
+                setTimeout(function(){
+    
+                    toast.remove();
+    
+                },4000);
+    
+            });
+    
+        }
+    );
+    
+    </script>
+
+</body>
+
+</html>
