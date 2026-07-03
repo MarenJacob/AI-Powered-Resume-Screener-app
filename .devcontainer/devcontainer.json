@@ -1,0 +1,42 @@
+{
+    "name": "TalentEon AI",
+
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+
+    "customizations": {
+
+        "vscode": {
+
+            "extensions": [
+
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-toolsai.jupyter",
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+
+            ]
+        }
+    },
+
+    "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+
+    "forwardPorts": [
+
+        5000
+
+    ],
+
+    "portsAttributes": {
+
+        "5000": {
+
+            "label": "TalentEon AI",
+
+            "onAutoForward": "openBrowser"
+
+        }
+    }
+}
